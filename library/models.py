@@ -8,7 +8,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=20)
     edition = models.CharField(max_length=30)
-    record = models.OneToOneField(Book,
+    record = models.OneToOneField(Record,
                                     on_delete=models.CASCADE,
                                     primary_key=True,
                                 )
@@ -40,7 +40,7 @@ class User(models.Model):
         return self.title
 
 class PhysicalCopy(models.Model):
-    record_id = models.ForeignKey(PhysicalCopy, on_delete=models.CASCADE)
+    record_id = models.ForeignKey(Record, on_delete=models.CASCADE)
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -49,7 +49,7 @@ class PhysicalCopy(models.Model):
         return self.title
 
 class UserBooking(models.Model):
-    member_id = models.ForeignKey(UserBooking, on_delete=models.CASCADE)
+    member_id = models.ForeignKey(Record, on_delete=models.CASCADE)
     physical_copy_id = models.OneToOneField(UserBooking,
                                     on_delete=models.CASCADE,
                                     primary_key=True,
