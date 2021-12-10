@@ -1,0 +1,115 @@
+﻿CREATE TABLE Books (
+ID                char(5),
+Title                varchar(40),
+Author                varchar(40),
+Edition                varchar(10),
+Record_ID        char(5),
+primary key (ID)
+foreign key (Record_ID) references Recrods
+);
+
+
+CREATE TABLE Physical_Copies(
+ID                        char(5),
+Record_ID                char(5),
+User_Booking_ID        char(5),
+primary key (ID),
+foreign key (Record_ID) references Records,
+foreign key (User_Booking_ID) references User_Bookings
+);
+
+
+CREATE TABLE Users(
+ID                        char(5),
+FirstName                varchar(20),
+LastName                varchar(20),
+Type                        varchar(15),
+Contact_Number        int(15),
+User_Booking_ID        char(5),
+primary key (ID),
+foreign key (User_Booking_ID) references User_Bookings
+);
+
+
+CREATE TABLE Records(
+ID                        char(5),
+Document_Type        varchar(15),
+Document_ID                char(5),
+Quantity                int(5),
+Category                varchar(15)
+primary key (ID),
+foreign key (Document_ID) references (Books, Journal_Articles, Magazines)
+);
+
+
+CREATE TABLE User_Bookings(
+ID                        char(5),
+User_ID                char(5),
+PhysicalCopy_ID        char(5),
+Bokking_Date                varchar(12),
+Due_Date                varchar(12),
+Status                        varchar(15)
+primary key (ID),
+foreign key (User_ID) references Users
+);
+
+
+CREATE TABLE Journal_Articles(
+ID                        char(5),
+Title                        varchar(40),
+Author                        varchar(40),
+Journal_ID                char(5),
+primary key (ID)
+);
+
+
+CREATE TABLE Magazines(
+ID                        char(5),
+Title                        varchar(40),
+Issue_ID                char(5),
+primary key (ID),
+foreign key (Issue_ID) references Issues
+);
+
+
+CREATE TABLE Journals(
+ID                        char(5),
+Title                        varchar(40),
+Publisher                varchar(40),
+Issue_ID                char(5),
+Journal_Article_ID        char(5),
+primary key (ID),
+foreign key (Issue_ID) references Issues,
+foreign key (Journal_Article_ID) references Journal_Articles
+);
+
+
+CREATE TABLE Issues(
+ID                        char(5),
+Title                        varchar(40),
+Contributor                varchar(40),
+Published_Date        varchar(12),
+Editor                        varchar(40),
+primary key (ID)
+);
+
+
+CREATE TABLE Record_ISA_Journal_Article(
+Record_ID                char(5),
+Journal_Article_ID        char(5),
+primary key (Record_ID, Journal_Article_ID)
+);
+
+
+CREATE TABLE Record_HasMany_Physical_Copy(
+Record_ID                char(5),
+physical_copy_ID        char(5),
+primary key (Record_ID, physical_copy_ID)
+);
+
+
+CREATE TABLE Record_ISA_Magazine(
+Record_ID                char(5),
+Magazine_ID                char(5),
+primary key (Record_ID, Magazine_ID)
+);
