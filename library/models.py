@@ -4,7 +4,6 @@ from django.utils import timezone
 
 
 class Book(models.Model):
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=20)
     edition = models.CharField(max_length=30)
@@ -12,8 +11,6 @@ class Book(models.Model):
                                     on_delete=models.CASCADE,
                                     primary_key=True,
                                 )
-    # created_date = models.DateTimeField(default=timezone.now)
-    # published_date = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -24,13 +21,10 @@ class Book(models.Model):
 
 
 class User(models.Model):
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=20)
     member_type = models.CharField(max_length=30)
     contactNumber = models.CharField(max_length=20) 
-    # created_date = models.DateTimeField(default=timezone.now)
-    # published_date = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -50,15 +44,13 @@ class PhysicalCopy(models.Model):
 
 class UserBooking(models.Model):
     user_id = models.ForeignKey(user_id, on_delete=models.CASCADE)
-    physical_copy_id = models.OneToOneField(PhysicalCopy,
+    physical_copy = models.OneToOneField(PhysicalCopy,
                                     on_delete=models.CASCADE,
                                     primary_key=True,
                                 )
     booking_date = models.CharField(max_length=30)
     due_date = models.CharField(max_length=20)
     status = models.CharField(max_length = 30) 
-    # created_date = models.DateTimeField(default=timezone.now)
-    # published_date = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -70,12 +62,8 @@ class UserBooking(models.Model):
 class Record(models.Model):
     document_id = models.CharField(max_length=20)
     document_type = models.CharField(max_length=100)
-    # document_id = models.CharField(max_length=20)
     quantity = models.CharField(max_length=30)
-    category = models.CharField(max_length=20)
-    # status = models.CharField(max_length = 30) 
-    # created_date = models.DateTimeField(default=timezone.now)
-    # published_date = models.DateTimeField(blank=True, null=True)
+    category = models.CharField(max_length=20) 
 
     def publish(self):
         self.published_date = timezone.now()
@@ -87,8 +75,11 @@ class Record(models.Model):
 class JournalArticle(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=20)
-    journal_id = models.CharField(max_length=30)
-    # category = models.CharField(max_length=20)
+    journal_id = models.ForeignKey(models.Journal, on_delete=models.CASCADE)
+    record = models.OneToOneField(Record,
+                                    on_delete=models.CASCADE,
+                                    primary_key=True,
+                                )
 
     def publish(self):
         self.published_date = timezone.now()
@@ -98,10 +89,12 @@ class JournalArticle(models.Model):
         return self.title
 
 class Magazine(models.Model):
+    record = models.OneToOneField(Record,
+                                    on_delete=models.CASCADE,
+                                    primary_key=True,
+                                )
     title = models.CharField(max_length=100)
-    # author = models.CharField(max_length=20)
     issue_id = models.CharField(max_length=30)
-    # category = models.CharField(max_length=20)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -114,7 +107,6 @@ class Journal(models.Model):
     title = models.CharField(max_length=100)
     publisher = models.CharField(max_length=20)
     issue_id = models.CharField(max_length=30)
-    # category = models.CharField(max_length=20)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -123,12 +115,14 @@ class Journal(models.Model):
     def __str__(self):
         return self.title
 
-class Magazine(models.Model):
+class Issue(models.Model):
     title = models.CharField(max_length=100)
     contributor = models.CharField(max_length=20)
     published_date = models.CharField(max_length = 30)
     editor = models.CharField(max_length=30)
-    # category = models.CharField(max_length=20)
+    journal_id = models.ForeignKey(models.Journal, on_delete=models.CASCADE)
+    magazine_id = models.ForeignKey(models.Magazine, on_delete=models.CASCADE)
+    
 
     def publish(self):
         self.published_date = timezone.now()
