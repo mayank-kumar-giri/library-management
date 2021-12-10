@@ -40,7 +40,7 @@ class User(models.Model):
         return self.title
 
 class PhysicalCopy(models.Model):
-    record_id = models.ForeignKey(Record, on_delete=models.CASCADE)
+    record_id = models.ForeignKey(record_id, on_delete=models.CASCADE)
     def publish(self):
         self.published_date = timezone.now()
         self.save()
