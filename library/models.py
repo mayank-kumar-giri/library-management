@@ -49,8 +49,8 @@ class PhysicalCopy(models.Model):
         return self.title
 
 class UserBooking(models.Model):
-    member_id = models.ForeignKey(Record, on_delete=models.CASCADE)
-    physical_copy_id = models.OneToOneField(UserBooking,
+    user_id = models.ForeignKey(user_id, on_delete=models.CASCADE)
+    physical_copy_id = models.OneToOneField(PhysicalCopy,
                                     on_delete=models.CASCADE,
                                     primary_key=True,
                                 )
