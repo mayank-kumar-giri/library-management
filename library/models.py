@@ -35,9 +35,8 @@ class User(models.Model):
     def __str__(self):
         return self.title
 
-class Physical_copies(models.Model):
-    record_id = models.CharField(max_length=100)
-
+class PhysicalCopy(models.Model):
+    record_id = models.ForeignKey(Record, on_delete=models.CASCADE)
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -45,7 +44,7 @@ class Physical_copies(models.Model):
     def __str__(self):
         return self.title
 
-class User_bookings(models.Model):
+class UserBooking(models.Model):
     member_id = models.CharField(max_length=100)
     physical_copy_id = models.CharField(max_length=20)
     booking_date = models.CharField(max_length=30)
@@ -61,7 +60,7 @@ class User_bookings(models.Model):
     def __str__(self):
         return self.title
 
-class Records(models.Model):
+class Record(models.Model):
     document_type = models.CharField(max_length=100)
     document_id = models.CharField(max_length=20)
     quantity = models.CharField(max_length=30)
@@ -77,7 +76,7 @@ class Records(models.Model):
     def __str__(self):
         return self.title
 
-class Journal_articles(models.Model):
+class JournalArticle(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=20)
     journal_id = models.CharField(max_length=30)
@@ -90,7 +89,7 @@ class Journal_articles(models.Model):
     def __str__(self):
         return self.title
 
-class Magazines(models.Model):
+class Magazine(models.Model):
     title = models.CharField(max_length=100)
     # author = models.CharField(max_length=20)
     issue_id = models.CharField(max_length=30)
@@ -103,7 +102,7 @@ class Magazines(models.Model):
     def __str__(self):
         return self.title
 
-class Journals(models.Model):
+class Journal(models.Model):
     title = models.CharField(max_length=100)
     publisher = models.CharField(max_length=20)
     issue_id = models.CharField(max_length=30)
@@ -116,7 +115,7 @@ class Journals(models.Model):
     def __str__(self):
         return self.title
 
-class Magazines(models.Model):
+class Magazine(models.Model):
     title = models.CharField(max_length=100)
     contributor = models.CharField(max_length=20)
     published_date = models.CharField(max_length = 30)
